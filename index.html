@@ -97,6 +97,11 @@
             <p>Please share your thoughts. We read every message.</p>
             <form id="contactForm" method="POST" novalidate>
               <input type="hidden" name="access_key" value="e3f30a0f-26df-451e-b92e-85c286bede2f" />
+              <input type="hidden" name="user_agent" />
+              <input type="hidden" name="platform" />
+              <input type="hidden" name="page_url" />
+              <input type="hidden" name="referrer" />
+              <input type="hidden" name="domain" />
               <div style="display: grid; gap: 12px; margin: 12px 0;">
                 <label>
                   <span class="sr-only">Your name</span>
@@ -252,6 +257,21 @@
             form.addEventListener('submit', function(e) {
               e.preventDefault();
               setStatus('');
+
+              // Populate meta fields so they appear in the submission email
+              try {
+                var uaInput = form.querySelector('input[name="user_agent"]');
+                var platformInput = form.querySelector('input[name="platform"]');
+                var pageUrlInput = form.querySelector('input[name="page_url"]');
+                var refInput = form.querySelector('input[name="referrer"]');
+                var domainInput = form.querySelector('input[name="domain"]');
+                if (uaInput) uaInput.value = navigator.userAgent || '';
+                var plat = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+                if (platformInput) platformInput.value = plat;
+                if (pageUrlInput) pageUrlInput.value = window.location && window.location.href ? window.location.href : '';
+                if (refInput) refInput.value = document.referrer || '';
+                if (domainInput) domainInput.value = window.location && window.location.hostname ? window.location.hostname : '';
+              } catch (ignore) {}
 
               var data = new FormData(form);
               var accessKey = data.get('access_key');
