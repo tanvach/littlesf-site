@@ -22,11 +22,12 @@
         h1 { margin: 0 0 12px; font-size: 40px; font-weight: 700; }
         p { margin: 0; font-size: 18px; color: #334155; font-weight: 300; }
         main { padding: 32px 24px; max-width: 880px; margin: 0 auto; }
-        a.button, button.button { display: inline-block; margin-top: 20px; padding: 12px 16px; background: #0ea5e9; color: white; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-size: 16px; font-weight: 600; }
+        a.button, button.button { display: inline-flex; align-items: center; justify-content: center; margin-top: 20px; padding: 12px 16px; background: #0ea5e9; color: white; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-size: 16px; font-weight: 600; line-height: 1; }
         #icsCopyButton { font-weight: 300; }
+        #openContact { font-weight: 300; }
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 1000; }
         .modal-overlay.open { display: flex; }
-        .modal { background: #ffffff; border-radius: 12px; max-width: 640px; width: 100%; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.2); }
+        .modal { background: #ffffff; border-radius: 12px; max-width: 760px; width: 100%; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.2); }
         .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #e2e8f0; }
         .modal-header h2 { margin: 0; font-size: 20px; }
         .modal-close { background: transparent; border: none; font-size: 24px; line-height: 1; cursor: pointer; color: #334155; padding: 4px; }
@@ -34,7 +35,7 @@
         .modal-body p { margin: 0 0 12px; }
         .modal-body ul { margin: 0 0 12px 20px; }
         .copy-row { display: flex; gap: 8px; align-items: center; margin: 12px 0 16px; }
-        .copy-input { flex: 1; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; }
+        .copy-input { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; }
         .copy-btn { padding: 10px 12px; background: #0ea5e9; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; }
         .small { font-size: 14px; color: #475569; }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
@@ -53,6 +54,18 @@
         <a class="button" href="https://events.littlesf.com" rel="noopener">Browse events</a>
         <button class="button" id="icsCopyButton" type="button" data-ics="https://events.littlesf.com/calendar/all.ics">Subscribe (ICS) 📋</button>
       </header>
+      <main>
+        <p>Being a parent is hard—and keeping growing minds engaged is even harder. Little SF curates the best publicly available, family‑friendly events around San Francisco.</p>
+        <ul style="margin: 12px 0 0 20px;">
+          <li><strong>Curated and current</strong>: We sift through community calendars to highlight high‑quality events.</li>
+          <li><strong>View or subscribe</strong>: Browse a clean calendar view, or subscribe to the live ICS link to get new events automatically.</li>
+          <li><strong>Always free</strong>: No account. No spam. Just great local activities.</li>
+        </ul>
+        <p style="margin-top: 12px;">Expect museum free days, outdoor festivals, library programs, neighborhood fairs, and more—each with date, location, and helpful details when available.</p>
+        <div style="margin-top: 28px; text-align: center;">
+          <button class="button" id="openContact" type="button">Contact / Feedback</button>
+        </div>
+      </main>
       <div id="subscribeModal" class="modal-overlay" aria-hidden="true">
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="subscribeModalTitle">
           <div class="modal-header">
@@ -74,15 +87,37 @@
           </div>
         </div>
       </div>
-      <main>
-        <p>Being a parent is hard—and keeping growing minds engaged is even harder. Little SF curates the best publicly available, family‑friendly events around San Francisco.</p>
-        <ul style="margin: 12px 0 0 20px;">
-          <li><strong>Curated and current</strong>: We sift through community calendars to highlight high‑quality events.</li>
-          <li><strong>View or subscribe</strong>: Browse a clean calendar view, or subscribe to the live ICS link to get new events automatically.</li>
-          <li><strong>Always free</strong>: No account. No spam. Just great local activities.</li>
-        </ul>
-        <p style="margin-top: 12px;">Expect museum free days, outdoor festivals, library programs, neighborhood fairs, and more—each with date, location, and helpful details when available.</p>
-      </main>
+      <div id="contactModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+          <div class="modal-header">
+            <h2 id="contactModalTitle">Contact / Feedback</h2>
+            <button class="modal-close" id="contactModalClose" aria-label="Close">×</button>
+          </div>
+          <div class="modal-body">
+            <p>Please share your thoughts. We read every message.</p>
+            <form id="contactForm" method="POST" novalidate>
+              <input type="hidden" name="access_key" value="e3f30a0f-26df-451e-b92e-85c286bede2f" />
+              <div style="display: grid; gap: 12px; margin: 12px 0;">
+                <label>
+                  <span class="sr-only">Your name</span>
+                  <input name="name" type="text" placeholder="Your name" required class="copy-input" />
+                </label>
+                <label>
+                  <span class="sr-only">Your email</span>
+                  <input name="email" type="email" placeholder="Your email" required class="copy-input" />
+                </label>
+                <label>
+                  <span class="sr-only">Message</span>
+                  <textarea name="message" rows="5" placeholder="Your message" required class="copy-input"></textarea>
+                </label>
+                <div class="h-captcha" data-captcha="true"></div>
+                <button id="contactSubmit" class="copy-btn" type="submit">Send</button>
+              </div>
+              <p id="contactStatus" class="small" aria-live="polite" style="min-height: 20px;"></p>
+            </form>
+          </div>
+        </div>
+      </div>
       <script>
         (function() {
           var icsUrl = 'https://events.littlesf.com/calendar/all.ics';
@@ -167,5 +202,95 @@
           });
         })();
       </script>
+      <script>
+        (function() {
+          var openClass = 'open';
+          var contactOverlay = document.getElementById('contactModal');
+          var openBtn = document.getElementById('openContact');
+          var closeBtn = document.getElementById('contactModalClose');
+          var form = document.getElementById('contactForm');
+          var statusEl = document.getElementById('contactStatus');
+          var submitBtn = document.getElementById('contactSubmit');
+
+          function openContact() {
+            if (!contactOverlay) return;
+            contactOverlay.classList.add(openClass);
+            contactOverlay.setAttribute('aria-hidden', 'false');
+            if (closeBtn) closeBtn.focus();
+          }
+
+          function closeContact() {
+            if (!contactOverlay) return;
+            contactOverlay.classList.remove(openClass);
+            contactOverlay.setAttribute('aria-hidden', 'true');
+          }
+
+          if (openBtn) openBtn.addEventListener('click', openContact);
+          if (closeBtn) closeBtn.addEventListener('click', closeContact);
+          if (contactOverlay) {
+            contactOverlay.addEventListener('click', function(e) {
+              if (e.target === contactOverlay) closeContact();
+            });
+          }
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeContact();
+          });
+
+          function setStatus(text, isError) {
+            if (!statusEl) return;
+            statusEl.textContent = text || '';
+            statusEl.style.color = isError ? '#b91c1c' : '#475569';
+          }
+
+          function setSubmitting(isSubmitting) {
+            if (!submitBtn) return;
+            submitBtn.disabled = !!isSubmitting;
+            submitBtn.textContent = isSubmitting ? 'Sending…' : 'Send';
+          }
+
+          if (form) {
+            form.addEventListener('submit', function(e) {
+              e.preventDefault();
+              setStatus('');
+
+              var data = new FormData(form);
+              var accessKey = data.get('access_key');
+              if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY') {
+                setStatus('Please add your Web3Forms access key first.', true);
+                return;
+              }
+
+              // Require hCaptcha client token before sending
+              var hCaptchaField = form.querySelector('textarea[name="h-captcha-response"]');
+              if (!hCaptchaField || !hCaptchaField.value) {
+                setStatus('Please complete the Captcha.', true);
+                return;
+              }
+
+              setSubmitting(true);
+              fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: data
+              }).then(function(res) { return res.json(); })
+                .then(function(json) {
+                  if (json && (json.success || json.message === 'Submission successful')) {
+                    setStatus('Thanks! Your message has been sent.');
+                    form.reset();
+                    setTimeout(closeContact, 900);
+                  } else {
+                    setStatus('Sorry, something went wrong. Please try again later.', true);
+                  }
+                })
+                .catch(function() {
+                  setStatus('Network error. Please try again.', true);
+                })
+                .finally(function() {
+                  setSubmitting(false);
+                });
+            });
+          }
+        })();
+      </script>
+      <script src="https://web3forms.com/client/script.js" async defer></script>
     </body>
     </html>
