@@ -22,9 +22,7 @@
         h1 { margin: 0 0 12px; font-size: 40px; font-weight: 700; }
         p { margin: 0; font-size: 18px; color: #334155; font-weight: 300; }
         main { padding: 32px 24px; max-width: 880px; margin: 0 auto; }
-        a.button, button.button { display: inline-flex; align-items: center; justify-content: center; margin-top: 20px; padding: 12px 16px; background: #0ea5e9; color: white; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-size: 16px; font-weight: 600; line-height: 1; }
-        #icsCopyButton { font-weight: 300; }
-        #openContact { font-weight: 300; }
+        a.button, button.button { display: inline-flex; align-items: center; justify-content: center; margin-top: 20px; padding: 12px 16px; background: #0ea5e9; color: white; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-size: 16px; font-weight: 700; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 1000; }
         .modal-overlay.open { display: flex; }
         .modal { background: #ffffff; border-radius: 12px; max-width: 760px; width: 100%; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.2); }
@@ -51,7 +49,7 @@
         </div>
         <h1>Little SF</h1>
         <p>Curated family-friendly events in San Francisco.</p>
-        <a class="button" href="https://events.littlesf.com" rel="noopener">Browse events</a>
+        <button class="button" id="browseEventsButton" type="button">Browse events</button>
         <button class="button" id="icsCopyButton" type="button" data-ics="https://events.littlesf.com/calendar/all.ics">Subscribe (ICS) 📋</button>
       </header>
       <main>
@@ -135,6 +133,7 @@
           var copyBtn = document.getElementById('icsCopyButton');
           var copyAgainBtn = document.getElementById('icsCopyAgain');
           var icsInput = document.getElementById('icsInput');
+          var browseBtn = document.getElementById('browseEventsButton');
 
           function copyToClipboard(text) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -182,6 +181,12 @@
               copyToClipboard(icsUrl);
               if (icsInput) icsInput.value = icsUrl;
               openModal();
+            });
+          }
+
+          if (browseBtn) {
+            browseBtn.addEventListener('click', function() {
+              window.location.href = 'https://events.littlesf.com';
             });
           }
 
